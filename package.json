@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "ondevamos-strapi",
   "private": true,
   "version": "0.1.0",
   "description": "A Strapi application",
@@ -9,18 +9,17 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.8.2",
-    "@strapi/plugin-users-permissions": "4.8.2",
     "@strapi/plugin-i18n": "4.8.2",
-    "better-sqlite3": "8.0.1"
+    "@strapi/plugin-users-permissions": "4.8.2",
+    "@strapi/strapi": "4.8.2",
+    "mysql": "^2.18.1"
   },
   "author": {
     "name": "A Strapi developer"
   },
   "strapi": {
-    "uuid": "ff69e17d-e8ca-430f-ade1-9567d3761f80"
+    "uuid": "f3729619-ee29-4811-96dd-0f9503d2457e"
   },
   "engines": {
     "node": ">=14.19.1 <=18.x.x",
