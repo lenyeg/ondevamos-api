@@ -3,6 +3,10 @@ version: '3'
 networks:
   traefik_public:
     external: true
+  ondevamos_private:
+
+volumes:
+  ondevamos-db:
 
 services:
   ondevamos-api:
@@ -15,10 +19,10 @@ services:
     env_file: .env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
-      DATABASE_HOST: ondevamos-db
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}      
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_PORT: ${DATABASE_PORT}
       JWT_SECRET: ${JWT_SECRET}
       ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
@@ -33,12 +37,28 @@ services:
       - ./public/uploads:/opt/app/public/uploads
     networks:
       - traefik_public
+      - ondevamos_private
     labels:
       - traefik.enable=true
       - traefik.docker.network=traefik_public
       - traefik.http.routers.ondevamos-api.rule=Host(`api.ondevamos.app`)
       - traefik.http.routers.ondevamos-api.entrypoints=websecure
       - traefik.http.routers.ondevamos-api.tls=true
-      - traefik.http.routers.bitwarden-ui.service=ondevamos-api
+      - traefik.http.routers.ondevamos-api.service=ondevamos-api
       - traefik.http.routers.ondevamos-api.middlewares=secure-headers@file,cloudflare-ipwhitelist@file,real-ip@file
       - traefik.http.services.ondevamos-api.loadbalancer.server.port=1337
+    depends_on:
+      - ondevamos-db
+  
+  ondevamos-db:
+    container_name: ondevamos-db
+    image: postgres:alpine
+    restart: always
+    volumes:
+      - ondevamos-db:/var/lib/postgresql/data
+    networks:
+      - ondevamos_private
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
