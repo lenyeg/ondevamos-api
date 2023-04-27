@@ -4,7 +4,8 @@
   "info": {
     "singularName": "place",
     "pluralName": "places",
-    "displayName": "Place"
+    "displayName": "Place",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -21,11 +22,12 @@
       "required": true
     },
     "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "available": {
       "type": "boolean",
@@ -33,12 +35,13 @@
       "required": true
     },
     "medias": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "videos"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
     "description": {
       "type": "string"
@@ -48,6 +51,18 @@
       "relation": "manyToMany",
       "target": "api::resource.resource",
       "inversedBy": "places"
+    },
+    "ratingLevel": {
+      "type": "decimal",
+      "min": 0,
+      "max": 5,
+      "default": 0
+    },
+    "priceLevel": {
+      "type": "integer",
+      "max": 5,
+      "min": 0,
+      "default": 0
     }
   }
 }
